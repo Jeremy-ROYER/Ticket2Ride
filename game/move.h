@@ -1,26 +1,26 @@
 /*===================================================================
 *
-*    oO Create game T2R Oo
+*    oO User's move T2R Oo
 *
 *====================================================================
 *
-* File : createGame.h
-* Date : 10/01/2021
+* File : move.h
+* Date : 11/01/2021
 * Author : Royer Jérémy
 * 
 *====================================================================
 *
-* Header of createGame.c
+* Header of move.c
 *
 *==================================================================*/
 
-#ifndef __CREATEGAME_H__
-#define __CREATEGAME_H__
+#ifndef __MOVE_H__
+#define __MOVE_H__
 
-void initPlayer(t_player* player, int playerNum);
+void askMove(t_move* move);
 
-void initTracks(t_track Tracks[50], int* arrayTracks, int nbTracks);
+t_return_code playOurMove(t_move* move, t_color* lastCard);
 
-void createGame(t_game* game);
-	
+int needReplay(t_move* move, t_color lastCard);
+
 #endif

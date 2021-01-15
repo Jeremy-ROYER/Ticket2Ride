@@ -20,6 +20,8 @@
 #include "TicketToRideAPI.h"
 #include "structGame.h"
 #include "createGame.h"
+#include "move.h"
+#include "update.h"
 
 int main(){
 	/* data structure necessary for the creation of the game */
@@ -29,21 +31,24 @@ int main(){
 	t_return_code returnCode = NORMAL_MOVE;
 	t_move move;
 	int replay = 0;
+	t_color lastMove = NONE;
 	
 	while(returnCode == NORMAL_MOVE){
 		printMap();
 
 		/* Turn to player */
 		if(game.player == 0){
-			t_color card;
-			returnCode = drawBlindCard(&card);
-			returnCode = drawBlindCard(&card);
+			askMove(&move);
+			replay = needReplay(&move, lastMove);
+			returnCode = playOurMove(&move, &lastMove);
 		}
 
 		/* Turn to opponent */
 		else{
 			returnCode = getMove(&move, &replay);
 		}
+
+		updateGame(&game, &move);
 
 		/* the other player will play */
 		if(returnCode == NORMAL_MOVE && !replay){
@@ -58,6 +63,7 @@ int main(){
 	else
 		printf("The opponent won, unluck.. \n");
 
+	free(game.gameBoard.arrayTracks);
 	closeConnection();
 
 	return EXIT_SUCCESS;
