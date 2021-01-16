@@ -22,6 +22,7 @@
 #include "createGame.h"
 #include "move.h"
 #include "update.h"
+#include "autoMove.h"
 
 int main(){
 	/* data structure necessary for the creation of the game */
@@ -29,18 +30,22 @@ int main(){
 	createGame(&game);
 
 	t_return_code returnCode = NORMAL_MOVE;
-	t_move move;
+	t_move move, lastMove;
 	int replay = 0;
-	t_color lastMove = NONE;
+	t_color lastCard = NONE;
+
+	int firstTurn = 1;
 	
 	while(returnCode == NORMAL_MOVE){
 		printMap();
 
 		/* Turn to player */
 		if(game.player == 0){
-			askMove(&move);
-			replay = needReplay(&move, lastMove);
-			returnCode = playOurMove(&move, &lastMove);
+			//askMove(&move);
+			lastMove = move;
+			firstTurn = chooseMove(&game, &move, &lastMove, replay, firstTurn);
+			replay = needReplay(&move, lastCard);
+			returnCode = playOurMove(&move, &lastCard);
 		}
 
 		/* Turn to opponent */
@@ -63,8 +68,9 @@ int main(){
 	else
 		printf("The opponent won, unluck.. \n");
 
-	free(game.gameBoard.arrayTracks);
 	closeConnection();
+
+	free(game.gameBoard.arrayTracks);
 
 	return EXIT_SUCCESS;
 }

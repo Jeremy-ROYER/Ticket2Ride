@@ -14,6 +14,7 @@
 *
 *==================================================================*/
 
+#include <limits.h>
 #include "TicketToRideAPI.h"
 #include "structGame.h"
 #include "update.h"
@@ -60,6 +61,7 @@ void updateBlindCard(t_player* player, int numPlayer, t_move* move){
 
 void updateCard(t_game* game, t_move* move){
 	game->players[game->player].nbCards++;
+	game->players[game->player].cards[move->drawCard.card]++;
 	for(int i=0; i<5; i++)
 		game->faceUp[i] = move->drawCard.faceUp[i];
 }
@@ -73,9 +75,14 @@ void updateRoute(t_game* game, t_move* move){
 				game->Tracks[i].taken = 0;
 				game->players[0].cards[move->claimRoute.color] = game->players[0].cards[move->claimRoute.color] - (game->Tracks[i].length - move->claimRoute.nbLocomotives);
 				game->players[0].cards[MULTICOLOR] = game->players[0].cards[MULTICOLOR] - move->claimRoute.nbLocomotives;
+				game->lengthTracks[move->claimRoute.city1][move->claimRoute.city2] = 0;
+				game->lengthTracks[move->claimRoute.city2][move->claimRoute.city1] = 0;
 			}
-			else
+			else{
+				game->lengthTracks[move->claimRoute.city1][move->claimRoute.city2] = INT_MAX;
+				game->lengthTracks[move->claimRoute.city2][move->claimRoute.city1] = INT_MAX;
 				game->Tracks[i].taken = 1;
+			}
 		}
 	}
 }

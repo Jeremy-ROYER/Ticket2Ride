@@ -15,7 +15,7 @@ LIBSDIR =
 PATHAPI = ../API/
 
 # fichiers du projet
-SRC = clientAPI.c TicketToRideAPI.c createGame.c move.c update.c play.c
+SRC = clientAPI.c TicketToRideAPI.c createGame.c move.c update.c autoMove.c play.c
 OBJ = $(SRC:.c=.o)
 EXEC = run.out
 
@@ -29,7 +29,8 @@ TicketToRideAPI.o: $(PATHAPI)clientAPI.h $(PATHAPI)TicketToRideAPI.h
 createGame.o: $(PATHAPI)TicketToRideAPI.h structGame.h createGame.h
 move.o: $(PATHAPI)TicketToRideAPI.h move.h
 update.o: $(PATHAPI)TicketToRideAPI.h structGame.h update.h
-play.o: $(PATHAPI)TicketToRideAPI.h $(PATHAPI)clientAPI.h structGame.h createGame.h move.h update.h
+autoMove.o: $(PATHAPI)TicketToRideAPI.h structGame.h autoMove.h
+play.o: $(PATHAPI)TicketToRideAPI.h $(PATHAPI)clientAPI.h structGame.h createGame.h move.h update.h autoMove.h
 
 # règles de compilation
 clientAPI.o: $(PATHAPI)clientAPI.c
@@ -45,6 +46,9 @@ move.o: move.c
 	$(CC) $(CCFLAGS) -o $@ -c $< -I$(PATHAPI)
 
 update.o: update.c
+	$(CC) $(CCFLAGS) -o $@ -c $< -I$(PATHAPI)
+
+autoMove.o: autoMove.c
 	$(CC) $(CCFLAGS) -o $@ -c $< -I$(PATHAPI)
 
 play.o: play.c

@@ -49,7 +49,10 @@ typedef struct{
 	t_color faceUp[5];
 	t_gameBoard gameBoard;
 	t_player players[2];
-	t_track Tracks[50];
+	t_track Tracks[90];
+	int lengthTracks[50][50];
+	int nbNeeded;
+	t_track neededTracks[90];
 }t_game;
 
 #endif

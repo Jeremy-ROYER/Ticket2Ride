@@ -14,6 +14,7 @@
 *
 *==================================================================*/
 
+#include <limits.h>
 #include "TicketToRideAPI.h"
 #include "structGame.h"
 
@@ -65,21 +66,31 @@ void initPlayer(t_player* player, int playerNum){
 	}
 }
 
-void initTracks(t_track Tracks[50], int* arrayTracks, int nbTracks){
-	for(int i=0; i<nbTracks; i++){
-		Tracks[i].city1 = arrayTracks[5*i];
-		Tracks[i].city2 = arrayTracks[5*i+1];
-		Tracks[i].length = arrayTracks[5*i+2];
-		Tracks[i].color1 = arrayTracks[5*i+3];
-		Tracks[i].color2 = arrayTracks[5*i+4];
+void initTracks(t_track Tracks[50], int lengthTracks[50][50], t_gameBoard* gameBoard){
+	for(int i=0; i<gameBoard->nbTracks; i++){
+		Tracks[i].city1 = gameBoard->arrayTracks[5*i];
+		Tracks[i].city2 = gameBoard->arrayTracks[5*i+1];
+		Tracks[i].length = gameBoard->arrayTracks[5*i+2];
+		Tracks[i].color1 = gameBoard->arrayTracks[5*i+3];
+		Tracks[i].color2 = gameBoard->arrayTracks[5*i+4];
 		Tracks[i].taken = -1;
+	}
+
+	for(int i=0; i<gameBoard->nbCities; i++){
+		for(int j=0; j<gameBoard->nbCities; j++){
+			lengthTracks[i][j] = INT_MAX;
+			for(int k=0; k<gameBoard->nbTracks; k++){
+				if( (Tracks[k].city1 == i && Tracks[k].city2 == j) || (Tracks[k].city1 == j && Tracks[k].city2 == i) )
+					lengthTracks[i][j] = Tracks[k].length;
+			}
+		}
 	}
 }
 
 void createGame(t_game* game){
 	/* Necessary to connect to server */
 	char* serverName = "li1417-56.members.linode.com";
-	unsigned int port = 1234;
+	unsigned int port = 7890;
 	char* name = "South_bot";
 	/* Necessary to wait for a game and get map */
 	char* gameType = "TRAINING PLAY_RANDOM timeout=10000 map=USA";
@@ -90,7 +101,8 @@ void createGame(t_game* game){
 	game->gameBoard.arrayTracks = malloc(5*game->gameBoard.nbTracks*sizeof(int));
 	game->player = getMap(game->gameBoard.arrayTracks, game->faceUp, game->players[0].initCards);
 
+	game->nbNeeded = 0;
 	initPlayer(&game->players[0],0); /* Us */
 	initPlayer(&game->players[1],1); /* Opponent */
-	initTracks(game->Tracks,game->gameBoard.arrayTracks, game->gameBoard.nbTracks);
+	initTracks(game->Tracks, game->lengthTracks, &game->gameBoard);
 }

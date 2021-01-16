@@ -19,7 +19,7 @@
 
 void initPlayer(t_player* player, int playerNum);
 
-void initTracks(t_track Tracks[50], int* arrayTracks, int nbTracks);
+void initTracks(t_track Tracks[50], int lengthTracks[50][50], t_gameBoard* gameBoard);
 
 void createGame(t_game* game);
 	
