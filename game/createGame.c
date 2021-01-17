@@ -90,10 +90,10 @@ void initTracks(t_track Tracks[50], int lengthTracks[50][50], t_gameBoard* gameB
 void createGame(t_game* game){
 	/* Necessary to connect to server */
 	char* serverName = "li1417-56.members.linode.com";
-	unsigned int port = 7890;
+	unsigned int port = 1234;
 	char* name = "South_bot";
 	/* Necessary to wait for a game and get map */
-	char* gameType = "TRAINING PLAY_RANDOM timeout=10000 map=USA";
+	char* gameType = ""; /* TRAINING NICE_BOT timeout=10000 map=USA */
 
 	connectToServer(serverName, port, name);
 	waitForT2RGame(gameType, game->gameName, &game->gameBoard.nbCities, &game->gameBoard.nbTracks);
