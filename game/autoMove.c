@@ -195,7 +195,7 @@ t_move chooseDraw(t_game* game, int replay){
 		}
 	}
 
-	if(game->players[0].cards[MULTICOLOR] < 2){
+	if(game->players[0].cards[MULTICOLOR] < 1){
 		for(int i=0; i<5; i++){
 			if(game->faceUp[i] == MULTICOLOR && replay == 0){
 				int colorMax = 0;
@@ -287,8 +287,12 @@ int chooseMove(t_game* game, t_move* move, t_move* lastMove, int replay, int fir
 								break;
 							}
 						}
+					}
+				}
 
-						else{
+				for(int i=0; i<game->nbNeeded; i++){
+					if(claim == 0){
+						if(game->neededTracks[i].color1 == MULTICOLOR && game->neededTracks[i].length <= game->players[0].nbWagons){
 							for(int j=0; j<9; j++){
 								if(game->neededTracks[i].length <= game->players[0].cards[j] && game->neededTracks[i].length <= game->players[0].nbWagons){
 									chooseClaim(game->neededTracks[i], move, j, 0);

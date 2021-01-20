@@ -26,6 +26,9 @@ void initPlayer(t_player* player, int playerNum){
 
 	/* If playerNum=0 it means it's us */
 	if(playerNum == 0){
+		for(int i=0; i<10; i++)
+			player->cards[i] = 0;
+
 		for(int i=0; i<4; i++){
 			switch(player->initCards[i]){
 				case PURPLE:
@@ -93,9 +96,10 @@ void createGame(t_game* game){
 	unsigned int port = 1234;
 	char* name = "South_bot";
 	/* Necessary to wait for a game and get map */
-	char* gameType = ""; /* TRAINING NICE_BOT timeout=10000 map=USA */
+	//char* gameType = "TOURNAMENT TEST"; /* TRAINING NICE_BOT timeout=10000 map=USA */
+	//connectToServer(serverName, port, name);
 
-	connectToServer(serverName, port, name);
+	char* gameType = "TOURNAMENT EISE3"; /* "TRAINING NICE_BOT timeout=10000 map=USA" for training alone ; "" to play against one player one time ; "TOURNAMENT <name>" to join and play in tournament */
 	waitForT2RGame(gameType, game->gameName, &game->gameBoard.nbCities, &game->gameBoard.nbTracks);
 
 	game->gameBoard.arrayTracks = malloc(5*game->gameBoard.nbTracks*sizeof(int));
